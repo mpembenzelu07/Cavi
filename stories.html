@@ -1153,7 +1153,7 @@
                 </div>
                 
                 <!-- Story 6 -->
-                <div class="story-card" data-category="vision">
+                <div class="story-card" data-category="video">
                     <div class="story-media">
                         <video poster="https://images.unsplash.com/photo-1559757175-0eb30cd8c063?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80">
                             <source src="#" type="video/mp4">
@@ -1164,7 +1164,7 @@
                     </div>
                     <div class="story-content">
                         <div class="story-meta">
-                            <span class="story-category">Vision</span>
+                            <span class="story-category">Video</span>
                             <span>October 2022</span>
                         </div>
                         <h3>Vision Screening Success</h3>
@@ -1396,10 +1396,13 @@
         const premiumNav = document.getElementById('premiumNav');
 
         mobileToggle.addEventListener('click', () => {
-            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
-            mobileToggle.innerHTML = navLinks.style.display === 'flex' 
-                ? '<i class="fas fa-times"></i>' 
-                : '<i class="fas fa-bars"></i>';
+            if (navLinks.style.display === 'flex') {
+                navLinks.style.display = 'none';
+                mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            } else {
+                navLinks.style.display = 'flex';
+                mobileToggle.innerHTML = '<i class="fas fa-times"></i>';
+            }
         });
 
         // Nav Scroll Effect
@@ -1416,6 +1419,29 @@
         const storyCards = document.querySelectorAll('.story-card');
         const categoryLinks = document.querySelectorAll('.category-card .btn');
 
+        // Function to filter stories
+        function filterStories(filterValue) {
+            storyCards.forEach(card => {
+                const cardCategory = card.getAttribute('data-category');
+                
+                if (filterValue === 'all') {
+                    card.style.display = 'block';
+                } else if (filterValue === 'video') {
+                    // Show video stories (category 'video' or stories with video elements)
+                    if (cardCategory === 'video' || card.querySelector('video')) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                } else if (cardCategory === filterValue) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Add click event to filter buttons
         filterBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 // Remove active class from all buttons
@@ -1424,15 +1450,7 @@
                 btn.classList.add('active');
                 
                 const filter = btn.getAttribute('data-filter');
-                
-                // Show/hide story cards based on filter
-                storyCards.forEach(card => {
-                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
-                        card.style.display = 'block';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
+                filterStories(filter);
             });
         });
 
@@ -1451,13 +1469,7 @@
                 });
                 
                 // Filter stories
-                storyCards.forEach(card => {
-                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
-                        card.style.display = 'block';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
+                filterStories(filter);
                 
                 // Scroll to stories grid
                 document.querySelector('.stories-grid-section').scrollIntoView({
@@ -1577,6 +1589,113 @@
                         </blockquote>
                         
                         <p style="margin-bottom: 20px;">Today, Babu Juma is an active member of his community again. He tends to his small garden, attends community meetings, and most importantly, watches his grandchildren play and grow.</p>
+                    </div>
+                `
+            },
+            3: {
+                title: "A Village Transformed",
+                category: "Community Impact",
+                date: "January 2023",
+                location: "Kagera Region",
+                content: `
+                    <h2 style="color: var(--primary); margin-bottom: 20px;">A Village Transformed</h2>
+                    <div style="display: flex; gap: 20px; margin-bottom: 30px; color: var(--text); font-size: 0.9rem;">
+                        <span><i class="fas fa-tag"></i> Community Impact</span>
+                        <span><i class="fas fa-calendar"></i> January 2023</span>
+                        <span><i class="fas fa-map-marker-alt"></i> Kagera Region</span>
+                    </div>
+                    
+                    <div style="margin-bottom: 30px;">
+                        <div style="position: relative; padding-bottom: 56.25%; height: 0; margin-bottom: 30px;">
+                            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;">
+                                <div style="text-align: center; color: white;">
+                                    <i class="fas fa-play-circle" style="font-size: 4rem; margin-bottom: 20px;"></i>
+                                    <p>Video: Community Transformation in Kagera</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <p style="font-size: 1.1rem; margin-bottom: 20px;">In the remote village of Kyerwa, Kagera region, attitudes toward disability were shaped by generations of misunderstanding and stigma. Children with disabilities were often hidden away, and families struggled alone.</p>
+                        
+                        <p style="margin-bottom: 20px;">CAVITRD's community education program changed everything. Over 6 months, we worked with village leaders, schools, and families to build understanding and create an inclusive community.</p>
+                        
+                        <h3 style="color: var(--primary); margin: 30px 0 15px;">The Program Components</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 30px 0;">
+                            <div style="background: #f0f9ff; padding: 20px; border-radius: var(--radius-md);">
+                                <h4 style="color: var(--primary); margin-bottom: 10px;">Community Workshops</h4>
+                                <p>Regular workshops on disability awareness and inclusion</p>
+                            </div>
+                            <div style="background: #f0f9ff; padding: 20px; border-radius: var(--radius-md);">
+                                <h4 style="color: var(--primary); margin-bottom: 10px;">School Integration</h4>
+                                <p>Training teachers to support children with disabilities</p>
+                            </div>
+                            <div style="background: #f0f9ff; padding: 20px; border-radius: var(--radius-md);">
+                                <h4 style="color: var(--primary); margin-bottom: 10px;">Parent Support Groups</h4>
+                                <p>Monthly meetings for families to share experiences</p>
+                            </div>
+                        </div>
+                        
+                        <h3 style="color: var(--primary); margin: 30px 0 15px;">The Results</h3>
+                        <p style="margin-bottom: 20px;">Today, Kyerwa village is a model of inclusion. Children with disabilities attend school alongside their peers. Community members support each other, and stigma has been replaced with understanding and acceptance.</p>
+                        
+                        <blockquote style="border-left: 4px solid var(--secondary); padding-left: 20px; margin: 30px 0; font-style: italic;">
+                            "Before CAVITRD came, my child stayed inside all day. Now he goes to school, plays with friends, and is happy. Our whole village has learned to embrace differences."
+                        </blockquote>
+                    </div>
+                `
+            },
+            4: {
+                title: "Dr. Sarah's Volunteer Journey",
+                category: "Volunteer Stories",
+                date: "December 2022",
+                location: "Dar es Salaam to Mwanza",
+                content: `
+                    <h2 style="color: var(--primary); margin-bottom: 20px;">Dr. Sarah's Volunteer Journey</h2>
+                    <div style="display: flex; gap: 20px; margin-bottom: 30px; color: var(--text); font-size: 0.9rem;">
+                        <span><i class="fas fa-tag"></i> Volunteer Stories</span>
+                        <span><i class="fas fa-calendar"></i> December 2022</span>
+                        <span><i class="fas fa-map-marker-alt"></i> Dar es Salaam to Mwanza</span>
+                    </div>
+                    
+                    <div style="margin-bottom: 30px;">
+                        <img src="https://images.unsplash.com/photo-1582750433449-648ed127bb54?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="Dr. Sarah" style="width: 100%; border-radius: var(--radius-md); margin-bottom: 20px;">
+                        
+                        <p style="font-size: 1.1rem; margin-bottom: 20px;">Dr. Sarah Mwenda, a pediatric surgeon from Dar es Salaam, volunteered with CAVITRD for two weeks in December 2022. What started as a professional commitment turned into a life-changing experience.</p>
+                        
+                        <h3 style="color: var(--primary); margin: 30px 0 15px;">The Journey Begins</h3>
+                        <p style="margin-bottom: 20px;">"I had heard about CAVITRD's work in the Lake Zone, but nothing prepared me for what I experienced," Dr. Sarah recalls. "The need was overwhelming, but so was the determination to make a difference."</p>
+                        
+                        <div style="background: #f0f9ff; padding: 30px; border-radius: var(--radius-md); margin: 30px 0;">
+                            <h4 style="color: var(--primary); margin-bottom: 15px;">Two Weeks of Impact</h4>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                                <div>
+                                    <strong>Surgeries Performed:</strong><br>
+                                    42 life-changing procedures
+                                </div>
+                                <div>
+                                    <strong>Patients Seen:</strong><br>
+                                    150+ consultations
+                                </div>
+                                <div>
+                                    <strong>Local Training:</strong><br>
+                                    8 healthcare workers trained
+                                </div>
+                                <div>
+                                    <strong>Community Outreach:</strong><br>
+                                    5 villages reached
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h3 style="color: var(--primary); margin: 30px 0 15px;">The Most Memorable Case</h3>
+                        <p style="margin-bottom: 20px;">"Little Amina was 4 years old with severe burns on her hands from a cooking accident. She couldn't hold anything or feed herself. The reconstructive surgery we performed gave her back the use of her hands. Seeing her pick up a toy for the first time after surgery - that moment will stay with me forever."</p>
+                        
+                        <h3 style="color: var(--primary); margin: 30px 0 15px;">A Commitment Renewed</h3>
+                        <p style="margin-bottom: 20px;">Dr. Sarah now volunteers with CAVITRD every 3 months and has inspired three other surgeons from her hospital to join the program.</p>
+                        
+                        <blockquote style="border-left: 4px solid var(--secondary); padding-left: 20px; margin: 30px 0; font-style: italic;">
+                            "Volunteering with CAVITRD reminded me why I became a doctor. It's not just about practicing medicine - it's about transforming lives and restoring hope. This work has given me more than I could ever give."
+                        </blockquote>
                     </div>
                 `
             }
