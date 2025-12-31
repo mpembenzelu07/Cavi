@@ -27,7 +27,7 @@
             --gradient-primary: linear-gradient(135deg, #0c4a6e 0%, #0ea5e9 100%);
             --gradient-gold: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
             --gradient-dark: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            --transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition: all 0.3s ease;
             --radius-xl: 24px;
             --radius-lg: 16px;
             --radius-md: 12px;
@@ -90,18 +90,6 @@
             z-index: 1;
             letter-spacing: 0.5px;
             text-transform: uppercase;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: inherit;
-            z-index: -1;
-            transition: var(--transition);
         }
 
         .btn:hover {
@@ -174,7 +162,7 @@
             opacity: 0.9;
         }
 
-        /* === Premium Navigation === */
+        /* === FIXED: Premium Navigation === */
         .premium-nav {
             position: fixed;
             top: 0;
@@ -261,6 +249,13 @@
             text-transform: uppercase;
         }
 
+        /* FIXED NAVIGATION STYLES */
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
         .nav-links {
             display: flex;
             align-items: center;
@@ -330,6 +325,7 @@
             font-size: 1.8rem;
             color: var(--primary);
             cursor: pointer;
+            z-index: 10001;
         }
 
         /* === Premium Hero Section === */
@@ -459,7 +455,7 @@
             font-weight: 600;
         }
 
-        /* === FIXED: Interactive Outreach Map === */
+        /* === Interactive Outreach Map === */
         .outreach-map {
             background: var(--white);
             border-radius: var(--radius-xl);
@@ -482,7 +478,6 @@
             width: 100%;
             height: 100%;
             position: relative;
-            background: #f0f9ff;
         }
 
         .map-wrapper {
@@ -492,12 +487,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-
-        .map-svg {
-            width: 80%;
-            height: 80%;
-            position: relative;
         }
 
         .map-dots {
@@ -835,25 +824,51 @@
                 padding: 0 25px;
             }
             
-            .nav-links {
-                display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                background: var(--white);
-                flex-direction: column;
-                padding: 30px;
-                box-shadow: var(--shadow-lg);
-                z-index: 1000;
-            }
-            
-            .nav-links.active {
-                display: flex;
-            }
-            
+            /* FIXED MOBILE NAVIGATION */
             .mobile-toggle {
                 display: block;
+            }
+            
+            .nav-menu {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 300px;
+                height: 100vh;
+                background: var(--white);
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 100px 30px 30px;
+                box-shadow: var(--shadow-xl);
+                transition: right 0.3s ease;
+                z-index: 9999;
+                gap: 20px;
+            }
+            
+            .nav-menu.active {
+                right: 0;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+                width: 100%;
+            }
+            
+            .nav-links li {
+                width: 100%;
+            }
+            
+            .nav-links a {
+                display: block;
+                padding: 10px 0;
+                width: 100%;
+            }
+            
+            .language-switcher {
+                margin-left: 0;
+                margin-top: 20px;
             }
             
             .hero-content h1 {
@@ -887,6 +902,10 @@
         @media (max-width: 768px) {
             section {
                 padding: 100px 0;
+            }
+            
+            .page-header {
+                padding: 150px 0 80px;
             }
             
             .hero-content h1 {
@@ -976,6 +995,10 @@
                 bottom: 10px;
                 padding: 15px;
             }
+            
+            .nav-menu {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -997,19 +1020,21 @@
                 <i class="fas fa-bars"></i>
             </button>
             
-            <ul class="nav-links" id="navLinks">
-                <li><a href="index.html" class="active">Home</a></li>
-                <li><a href="about.html">About Us</a></li>
-                <li><a href="programs.html">What We Do</a></li>
-                <li><a href="get-involved.html">Get Involved</a></li>
-                <li><a href="stories.html">Stories</a></li>
-                <li><a href="portal.html">Portal</a></li>
+            <div class="nav-menu" id="navMenu">
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="programs.html">What We Do</a></li>
+                    <li><a href="get-involved.html">Get Involved</a></li>
+                    <li><a href="stories.html">Stories</a></li>
+                    <li><a href="portal.html">Portal</a></li>
+                </ul>
                 
                 <div class="language-switcher">
                     <button class="lang-btn active" id="langEn">EN</button>
                     <button class="lang-btn" id="langSw">SW</button>
                 </div>
-            </ul>
+            </div>
         </div>
     </nav>
 
@@ -1056,7 +1081,7 @@
         </div>
     </section>
 
-    <!-- FIXED: Interactive Outreach Map -->
+    <!-- Interactive Outreach Map -->
     <section class="outreach-map" id="map">
         <div class="container">
             <div class="section-header">
@@ -1264,22 +1289,41 @@
     <script>
         // === Premium Scripts ===
         
-        // Mobile Navigation
+        // FIXED: Mobile Navigation Toggle
         const mobileToggle = document.getElementById('mobileToggle');
-        const navLinks = document.getElementById('navLinks');
+        const navMenu = document.getElementById('navMenu');
         const premiumNav = document.getElementById('premiumNav');
+        const navLinks = document.querySelectorAll('.nav-links a');
 
-        mobileToggle.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-            mobileToggle.innerHTML = navLinks.classList.contains('active') 
+        // Toggle mobile menu
+        mobileToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            navMenu.classList.toggle('active');
+            mobileToggle.innerHTML = navMenu.classList.contains('active') 
                 ? '<i class="fas fa-times"></i>' 
                 : '<i class="fas fa-bars"></i>';
         });
 
+        // Close mobile menu when clicking on a link
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+
         // Close mobile menu when clicking outside
         document.addEventListener('click', (e) => {
-            if (!e.target.closest('.nav-container') && navLinks.classList.contains('active')) {
-                navLinks.classList.remove('active');
+            if (!e.target.closest('.nav-menu') && !e.target.closest('.mobile-toggle')) {
+                navMenu.classList.remove('active');
+                mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            }
+        });
+
+        // Close mobile menu on window resize (if resized to desktop)
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 992) {
+                navMenu.classList.remove('active');
                 mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
             }
         });
@@ -1328,7 +1372,7 @@
 
         observer.observe(document.getElementById('hero'));
 
-        // FIXED: Interactive Map Functionality
+        // Interactive Map Functionality
         const mapDots = document.querySelectorAll('.map-dot');
         const mapInfo = document.getElementById('mapInfo');
         const mapLocationTitle = document.getElementById('mapLocationTitle');
@@ -1391,9 +1435,11 @@
             
             // Add hover effect
             dot.addEventListener('mouseenter', () => {
-                dot.style.transform = 'scale(1.5)';
-                dot.style.boxShadow = '0 0 0 12px rgba(220, 38, 38, 0.3)';
-                dot.style.zIndex = '20';
+                if (!dot.classList.contains('active')) {
+                    dot.style.transform = 'scale(1.5)';
+                    dot.style.boxShadow = '0 0 0 12px rgba(220, 38, 38, 0.3)';
+                    dot.style.zIndex = '20';
+                }
             });
             
             dot.addEventListener('mouseleave', () => {
@@ -1419,15 +1465,7 @@
             }
         }
 
-        // Close map info when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.map-dot') && !e.target.closest('.map-info')) {
-                // Keep info visible since we have active dots
-                // mapInfo.classList.remove('active');
-            }
-        });
-
-        // Language Switching System (Simplified)
+        // Language Switching System
         const langEnBtn = document.getElementById('langEn');
         const langSwBtn = document.getElementById('langSw');
 
@@ -1491,6 +1529,14 @@
                 card.style.transform = 'translateY(0)';
                 card.style.boxShadow = 'var(--shadow-lg)';
             });
+        });
+
+        // Set current year in footer
+        document.addEventListener('DOMContentLoaded', () => {
+            const yearSpan = document.querySelector('.footer-bottom p');
+            if (yearSpan) {
+                yearSpan.innerHTML = yearSpan.innerHTML.replace('2023', new Date().getFullYear());
+            }
         });
     </script>
 </body>
