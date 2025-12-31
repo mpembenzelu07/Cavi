@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Features - FootIQ AI Football Analysis</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ===== GLOBAL STYLES (Copy from index.html) ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #1a73e8;
+            --secondary: #0d47a1;
+            --accent: #ff9800;
+            --light: #f5f7fa;
+            --dark: #202124;
+            --gray: #5f6368;
+            --success: #34a853;
+            --warning: #fbbc05;
+            --danger: #ea4335;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* ===== HEADER & NAVIGATION ===== */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .logo i {
+            color: var(--accent);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 600;
+            transition: color 0.3s;
+            padding: 5px 0;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .nav-links a.active {
+            color: var(--primary);
+        }
+        
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary);
+            border-radius: 3px;
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        /* ===== BUTTONS ===== */
+        .btn {
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.3);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(26, 115, 232, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        /* ===== FEATURES PAGE SPECIFIC STYLES ===== */
+        .page-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 100px 0 60px;
+            text-align: center;
+        }
+        
+        .page-header h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .page-subtitle {
+            font-size: 20px;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        .feature-detail {
+            padding: 80px 0;
+        }
+        
+        .feature-category {
+            margin-bottom: 80px;
+        }
+        
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .category-icon {
+            width: 70px;
+            height: 70px;
+            background-color: rgba(26, 115, 232, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 30px;
+        }
+        
+        .category-title {
+            font-size: 32px;
+            color: var(--dark);
+        }
+        
+        .category-badge {
+            display: inline-block;
+            padding: 6px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        
+        .badge-core {
+            background-color: rgba(52, 168, 83, 0.1);
+            color: var(--success);
+        }
+        
+        .badge-advanced {
+            background-color: rgba(251, 188, 5, 0.1);
+            color: var(--warning);
+        }
+        
+        .badge-elite {
+            background-color: rgba(234, 67, 53, 0.1);
+            color: var(--danger);
+        }
+        
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .feature-item {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--primary);
+            transition: transform 0.3s;
+        }
+        
+        .feature-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-item h4 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .feature-item p {
+            color: var(--gray);
+            margin-bottom: 15px;
+        }
+        
+        .feature-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        
+        .status-available {
+            background-color: rgba(52, 168, 83, 0.1);
+            color: var(--success);
+        }
+        
+        .status-coming {
+            background-color: rgba(251, 188, 5, 0.1);
+            color: var(--warning);
+        }
+        
+        .status-beta {
+            background-color: rgba(26, 115, 232, 0.1);
+            color: var(--primary);
+        }
+        
+        .feature-timeline {
+            margin-top: 50px;
+            padding: 40px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        
+        .timeline-title {
+            font-size: 24px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            text-align: center;
+        }
+        
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 10%;
+            right: 10%;
+            height: 3px;
+            background-color: #e0e0e0;
+        }
+        
+        .timeline-phase {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            flex: 1;
+        }
+        
+        .phase-dot {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin: 0 auto 15px;
+        }
+        
+        .phase-dot.current {
+            background-color: var(--accent);
+        }
+        
+        /* ===== FOOTER ===== */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .footer-links h4 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .footer-links ul {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-icons a {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .social-icons a:hover {
+            background-color: var(--primary);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #aaa;
+            font-size: 14px;
+        }
+        
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 992px) {
+            .timeline {
+                flex-direction: column;
+                gap: 30px;
+            }
+            
+            .timeline::before {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .nav-links {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .page-header h1 {
+                font-size: 36px;
+            }
+            
+            .category-header {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="nav-container">
+                <a href="index.html" class="logo">
+                    <i class="fas fa-futbol"></i>
+                    <span>FootIQ</span>
+                </a>
+                
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="features.html" class="active">Features</a></li>
+                    <li><a href="analysis.html">Analysis</a></li>
+                    <li><a href="training.html">Training Plans</a></li>
+                    <li><a href="nutrition.html">Nutrition</a></li>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                </ul>
+                
+                <div class="auth-buttons">
+                    <a href="login.html" class="btn btn-outline">Log In</a>
+                    <a href="signup.html" class="btn btn-primary">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Complete Feature Set</h1>
+            <p class="page-subtitle">Explore all the powerful tools and capabilities that make FootIQ the ultimate football performance analysis platform</p>
+        </div>
+    </section>
+
+    <!-- Core Features -->
+    <section class="feature-detail">
+        <div class="container">
+            <div class="feature-category">
+                <div class="category-header">
+                    <div class="category-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h2 class="category-title">Core Features (MVP)</h2>
+                </div>
+                <p class="category-badge badge-core">LAUNCH READY</p>
+                <p>These are the essential features that make FootIQ a complete, sellable product right now.</p>
+                
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <h4><i class="fas fa-user"></i> Player Profile</h4>
+                        <p>Create detailed profiles with age, position, height, weight, and specific goals</p>
+                        <span class="feature-status status-available">Available Now</span>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <h4><i class="fas fa-video"></i> Video Upload & Processing</h4>
+                        <p>Upload match/training videos (MP4, MOV). Secure cloud storage with easy access</p>
+                        <span class="feature-status status-available">Available Now</span>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <h4><i class="fas fa-brain"></i> AI + Coach Analysis</h4>
+                        <p>Hybrid system: AI breaks down video, real coaches validate and fine-tune feedback</p>
+                        <span class="feature-status status-available">Available Now</span>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <h4><i class="fas fa-dumbbell"></i> Personalized Training Plans</h4>
+                        <p>Daily drills based on position, weaknesses, and improvement goals</p>
+                        <span class="feature-status status-available">Available Now</span>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <h4><i class="fas fa-apple-alt"></i> Nutrition & Sleep Guidance</h4>
+                        <p>Localized meal plans, hydration advice, match-day nutrition, sleep optimization</p>
+                        <span class="feature-status status-available">Available Now</span>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <h4><i class="fas fa-chart-line"></i> Player Dashboard & Reports</h4>
+                        <p>Track performance scores, weaknesses, strengths, and download PDF reports</p>
+                        <span class="feature-status status-available">Available Now</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Advanced Features -->
+            <div class="feature-category">
+                <div class="category-header">
+                    <div class="category-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h2 class="category-title">Advanced Features</h2>
+                </div>
+                <p class="category-badge badge-advanced">ADD AFTER TRACTION</p>
+                <p>Enhanced capabilities that add significant value without breaking user trust.</p>
+                
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <h4><i class="fas fa-film"></i> Advanced Video Intelligence</h4>
+                        <p>Auto-tag highlights, weak-foot detection, movement heatmaps, decision timing analysis</p>
+                        <span class="feature-status status-coming">Coming Soon</span>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <h4><i class="fas fa-tachometer-alt"></i> Smart Progress Engine</h4>
+                        <p>Compare last 3 videos, performance trend charts, non-medical injury risk warnings</p>
+                        <span class="feature-status status-coming">Coming Soon</span>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <h4><i class="fas fa-utensils"></i> Adaptive Nutrition Engine</h4>
+                        <p>Training-day vs rest-day meals, match-day fueling strategies, hydration alerts</p>
+                        <span class="feature-status status-beta">In Beta Testing</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Elite Features -->
+            <div class="feature-category">
+                <div class="category-header">
+                    <div class="category-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h2 class="category-title">Elite / Pro Features</h2>
+                </div>
+                <p class="category-badge badge-elite">HIGH-END OPTIONAL</p>
+                <p>Premium features designed for academies, scouts, and elite professional players.</p>
+                
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <h4><i class="fas fa-vr-cardboard"></i> 3D / AR Tactical Visualization</h4>
+                        <p>Player movement in 3D, positioning replay, tactical awareness visualization</p>
+                        <span class="feature-status status-coming">Q4 2024</span>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <h4><i class="fas fa-satellite"></i> Live Session Tracking</h4>
+                        <p>GPS vest integration, speed/distance/sprint data, match heat maps (hardware optional)</p>
+                        <span class="feature-status status-coming">Q1 2025</span>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <h4><i class="fas fa-shield-alt"></i> Verified Performance History</h4>
+                        <p>Match history timeline, coach verification, tamper-proof reports (blockchain integration)</p>
+                        <span class="feature-status status-coming">Q2 2025</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Feature Timeline -->
+            <div class="feature-timeline">
+                <h3 class="timeline-title">Feature Rollout Timeline</h3>
+                <div class="timeline">
+                    <div class="timeline-phase">
+                        <div class="phase-dot current">2023</div>
+                        <h4>Core Platform</h4>
+                        <p>MVP Launch<br>All essential features</p>
+                    </div>
+                    
+                    <div class="timeline-phase">
+                        <div class="phase-dot">2024</div>
+                        <h4>Advanced Features</h4>
+                        <p>Video intelligence<br>Progress tracking</p>
+                    </div>
+                    
+                    <div class="timeline-phase">
+                        <div class="phase-dot">2025</div>
+                        <h4>Elite Features</h4>
+                        <p>3D visualization<br>Live tracking</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <i class="fas fa-futbol"></i>
+                        <span>FootIQ</span>
+                    </div>
+                    <p>AI-powered football performance analysis platform that helps players improve through video analysis, personalized training, and data-driven insights.</p>
+                    
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Platform</h4>
+                    <ul>
+                        <li><a href="features.html" class="active">Features</a></li>
+                        <li><a href="analysis.html">Video Analysis</a></li>
+                        <li><a href="training.html">Training Plans</a></li>
+                        <li><a href="nutrition.html">Nutrition Guide</a></li>
+                        <li><a href="dashboard.html">Player Dashboard</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="index.html#how-it-works">How It Works</a></li>
+                        <li><a href="index.html#pricing">Pricing</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                        <li><a href="cookies.html">Cookie Policy</a></li>
+                        <li><a href="disclaimer.html">Medical Disclaimer</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 FootIQ. All rights reserved. This platform provides performance analysis and is not a substitute for professional medical advice.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
