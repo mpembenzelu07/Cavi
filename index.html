@@ -459,7 +459,7 @@
             font-weight: 600;
         }
 
-        /* === Interactive Outreach Map === */
+        /* === FIXED: Interactive Outreach Map === */
         .outreach-map {
             background: var(--white);
             border-radius: var(--radius-xl);
@@ -475,45 +475,69 @@
             border-radius: var(--radius-lg);
             overflow: hidden;
             background: #f0f9ff;
+            background-image: linear-gradient(to bottom, #e0f2fe, #f0f9ff);
         }
 
-        .map-placeholder {
+        .map-visual {
             width: 100%;
             height: 100%;
+            position: relative;
+            background: #f0f9ff;
+        }
+
+        .map-wrapper {
+            width: 100%;
+            height: 100%;
+            position: relative;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%);
+        }
+
+        .map-svg {
+            width: 80%;
+            height: 80%;
             position: relative;
         }
 
         .map-dots {
             position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
         }
 
         .map-dot {
             position: absolute;
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
             background: var(--accent);
             border-radius: 50%;
-            transform: translate(-50%, -50%);
             cursor: pointer;
             transition: var(--transition);
             box-shadow: 0 0 0 8px rgba(220, 38, 38, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
         }
 
         .map-dot:hover {
-            transform: translate(-50%, -50%) scale(1.5);
+            transform: scale(1.5);
             box-shadow: 0 0 0 12px rgba(220, 38, 38, 0.3);
+            z-index: 20;
         }
 
         .map-dot.active {
             background: var(--secondary);
             box-shadow: 0 0 0 12px rgba(245, 158, 11, 0.3);
+            z-index: 20;
+        }
+
+        .map-dot i {
+            color: var(--white);
+            font-size: 12px;
         }
 
         .map-info {
@@ -524,17 +548,18 @@
             backdrop-filter: blur(10px);
             border-radius: var(--radius-lg);
             padding: 30px;
-            max-width: 400px;
+            width: 350px;
             box-shadow: var(--shadow-lg);
             display: none;
+            z-index: 100;
         }
 
         .map-info.active {
             display: block;
-            animation: fadeInUp 0.5s ease;
+            animation: slideInUp 0.5s ease;
         }
 
-        @keyframes fadeInUp {
+        @keyframes slideInUp {
             from {
                 opacity: 0;
                 transform: translateY(20px);
@@ -543,6 +568,51 @@
                 opacity: 1;
                 transform: translateY(0);
             }
+        }
+
+        .map-info h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+
+        .map-info p {
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .map-info p strong {
+            color: var(--primary);
+            margin-right: 10px;
+        }
+
+        .map-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(12, 74, 110, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px;
+            z-index: 5;
+        }
+
+        .map-overlay i {
+            font-size: 4rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .map-overlay h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 2rem;
         }
 
         /* === Features Grid === */
@@ -767,6 +837,19 @@
             
             .nav-links {
                 display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--white);
+                flex-direction: column;
+                padding: 30px;
+                box-shadow: var(--shadow-lg);
+                z-index: 1000;
+            }
+            
+            .nav-links.active {
+                display: flex;
             }
             
             .mobile-toggle {
@@ -792,6 +875,12 @@
             
             .map-container {
                 height: 400px;
+            }
+            
+            .map-info {
+                width: 300px;
+                left: 20px;
+                bottom: 20px;
             }
         }
 
@@ -837,6 +926,15 @@
             .features-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .map-container {
+                height: 350px;
+            }
+            
+            .map-info {
+                width: 250px;
+                padding: 20px;
+            }
         }
 
         @media (max-width: 576px) {
@@ -870,6 +968,13 @@
             
             .map-container {
                 height: 300px;
+            }
+            
+            .map-info {
+                width: 90%;
+                left: 5%;
+                bottom: 10px;
+                padding: 15px;
             }
         }
     </style>
@@ -951,7 +1056,7 @@
         </div>
     </section>
 
-    <!-- Interactive Outreach Map -->
+    <!-- FIXED: Interactive Outreach Map -->
     <section class="outreach-map" id="map">
         <div class="container">
             <div class="section-header">
@@ -960,31 +1065,46 @@
             </div>
             
             <div class="map-container">
-                <div class="map-placeholder">
-                    <div class="map-dots">
-                        <div class="map-dot" style="top: 30%; left: 35%;" data-location="Mwanza"></div>
-                        <div class="map-dot" style="top: 45%; left: 40%;" data-location="Geita"></div>
-                        <div class="map-dot" style="top: 60%; left: 45%;" data-location="Shinyanga"></div>
-                        <div class="map-dot" style="top: 50%; left: 30%;" data-location="Kagera"></div>
-                        <div class="map-dot active" style="top: 40%; left: 50%;" data-location="Mara"></div>
+                <div class="map-visual">
+                    <div class="map-overlay">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <h3>Lake Zone Region - Tanzania</h3>
+                        <p>Click on the markers to see our impact in each region</p>
+                    </div>
+                    
+                    <div class="map-wrapper">
+                        <!-- Map dots positioned for Tanzania Lake Zone -->
+                        <div class="map-dots">
+                            <div class="map-dot" style="top: 40%; left: 35%;" data-location="mwanza">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="map-dot" style="top: 30%; left: 45%;" data-location="geita">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="map-dot" style="top: 50%; left: 40%;" data-location="shinyanga">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="map-dot" style="top: 60%; left: 30%;" data-location="kagera">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="map-dot active" style="top: 35%; left: 50%;" data-location="mara">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                        </div>
                     </div>
                     
                     <div class="map-info" id="mapInfo">
-                        <h3>Mara Region</h3>
-                        <p><strong>Last Surgical Camp:</strong> October 2023</p>
-                        <p><strong>Procedures Completed:</strong> 127</p>
-                        <p><strong>Patients Served:</strong> 89</p>
-                        <p><strong>Upcoming Camp:</strong> March 2024</p>
-                        <a href="programs.html#surgical" class="btn btn-primary" style="margin-top: 15px; padding: 12px 24px;">
+                        <h3 id="mapLocationTitle">Mara Region</h3>
+                        <div id="mapInfoContent">
+                            <p><strong>Last Surgical Camp:</strong> <span id="mapLastCamp">October 2023</span></p>
+                            <p><strong>Procedures Completed:</strong> <span id="mapProcedures">127</span></p>
+                            <p><strong>Patients Served:</strong> <span id="mapPatients">89</span></p>
+                            <p><strong>Upcoming Camp:</strong> <span id="mapUpcoming">March 2024</span></p>
+                        </div>
+                        <a href="programs.html#surgical" class="btn btn-primary" style="margin-top: 15px; padding: 12px 24px; display: inline-block;">
                             <i class="fas fa-info-circle"></i>
                             <span>View Details</span>
                         </a>
-                    </div>
-                    
-                    <div style="text-align: center; z-index: 1;">
-                        <i class="fas fa-map-marked-alt" style="font-size: 4rem; color: var(--primary); margin-bottom: 20px;"></i>
-                        <h3 style="color: var(--primary);">Lake Zone Region - Tanzania</h3>
-                        <p style="color: var(--text); max-width: 600px; margin: 20px auto;">Click on the red dots to see our impact in each region</p>
                     </div>
                 </div>
             </div>
@@ -1150,10 +1270,18 @@
         const premiumNav = document.getElementById('premiumNav');
 
         mobileToggle.addEventListener('click', () => {
-            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
-            mobileToggle.innerHTML = navLinks.style.display === 'flex' 
+            navLinks.classList.toggle('active');
+            mobileToggle.innerHTML = navLinks.classList.contains('active') 
                 ? '<i class="fas fa-times"></i>' 
                 : '<i class="fas fa-bars"></i>';
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.nav-container') && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            }
         });
 
         // Nav Scroll Effect
@@ -1200,40 +1328,45 @@
 
         observer.observe(document.getElementById('hero'));
 
-        // Interactive Map
+        // FIXED: Interactive Map Functionality
         const mapDots = document.querySelectorAll('.map-dot');
         const mapInfo = document.getElementById('mapInfo');
+        const mapLocationTitle = document.getElementById('mapLocationTitle');
+        const mapLastCamp = document.getElementById('mapLastCamp');
+        const mapProcedures = document.getElementById('mapProcedures');
+        const mapPatients = document.getElementById('mapPatients');
+        const mapUpcoming = document.getElementById('mapUpcoming');
         
         const locationData = {
-            'Mwanza': {
+            'mwanza': {
                 title: 'Mwanza Region',
                 lastCamp: 'September 2023',
                 procedures: '215',
                 patients: '150',
                 upcoming: 'April 2024'
             },
-            'Geita': {
+            'geita': {
                 title: 'Geita Region',
                 lastCamp: 'August 2023',
                 procedures: '178',
                 patients: '132',
                 upcoming: 'May 2024'
             },
-            'Shinyanga': {
+            'shinyanga': {
                 title: 'Shinyanga Region',
                 lastCamp: 'July 2023',
                 procedures: '192',
                 patients: '145',
                 upcoming: 'June 2024'
             },
-            'Kagera': {
+            'kagera': {
                 title: 'Kagera Region',
                 lastCamp: 'June 2023',
                 procedures: '165',
                 patients: '120',
                 upcoming: 'July 2024'
             },
-            'Mara': {
+            'mara': {
                 title: 'Mara Region',
                 lastCamp: 'October 2023',
                 procedures: '127',
@@ -1241,6 +1374,9 @@
                 upcoming: 'March 2024'
             }
         };
+
+        // Initialize with Mara region (active dot)
+        updateMapInfo('mara');
 
         mapDots.forEach(dot => {
             dot.addEventListener('click', () => {
@@ -1250,29 +1386,44 @@
                 dot.classList.add('active');
                 
                 const location = dot.getAttribute('data-location');
-                const data = locationData[location];
-                
-                if (data) {
-                    mapInfo.innerHTML = `
-                        <h3>${data.title}</h3>
-                        <p><strong>Last Surgical Camp:</strong> ${data.lastCamp}</p>
-                        <p><strong>Procedures Completed:</strong> ${data.procedures}</p>
-                        <p><strong>Patients Served:</strong> ${data.patients}</p>
-                        <p><strong>Upcoming Camp:</strong> ${data.upcoming}</p>
-                        <a href="programs.html#surgical" class="btn btn-primary" style="margin-top: 15px; padding: 12px 24px;">
-                            <i class="fas fa-info-circle"></i>
-                            <span>View Details</span>
-                        </a>
-                    `;
-                    mapInfo.classList.add('active');
+                updateMapInfo(location);
+            });
+            
+            // Add hover effect
+            dot.addEventListener('mouseenter', () => {
+                dot.style.transform = 'scale(1.5)';
+                dot.style.boxShadow = '0 0 0 12px rgba(220, 38, 38, 0.3)';
+                dot.style.zIndex = '20';
+            });
+            
+            dot.addEventListener('mouseleave', () => {
+                if (!dot.classList.contains('active')) {
+                    dot.style.transform = 'scale(1)';
+                    dot.style.boxShadow = '0 0 0 8px rgba(220, 38, 38, 0.2)';
+                    dot.style.zIndex = '10';
                 }
             });
         });
 
+        function updateMapInfo(location) {
+            const data = locationData[location];
+            
+            if (data) {
+                mapLocationTitle.textContent = data.title;
+                mapLastCamp.textContent = data.lastCamp;
+                mapProcedures.textContent = data.procedures;
+                mapPatients.textContent = data.patients;
+                mapUpcoming.textContent = data.upcoming;
+                
+                mapInfo.classList.add('active');
+            }
+        }
+
         // Close map info when clicking outside
         document.addEventListener('click', (e) => {
             if (!e.target.closest('.map-dot') && !e.target.closest('.map-info')) {
-                mapInfo.classList.remove('active');
+                // Keep info visible since we have active dots
+                // mapInfo.classList.remove('active');
             }
         });
 
@@ -1296,22 +1447,51 @@
         // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
+                const href = this.getAttribute('href');
                 
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 100,
-                        behavior: 'smooth'
-                    });
+                // Only handle internal page anchors
+                if (href !== '#' && href.startsWith('#')) {
+                    e.preventDefault();
+                    const targetId = href;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
                 }
             });
         });
 
         // Initialize counters on page load
-        animateCounters();
+        window.addEventListener('load', () => {
+            animateCounters();
+        });
+
+        // Parallax effect for hero section
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.getElementById('hero');
+            if (hero) {
+                const rate = scrolled * -0.5;
+                hero.style.backgroundPosition = `center ${rate}px`;
+            }
+        });
+
+        // Add hover effects to feature cards
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-20px)';
+                card.style.boxShadow = 'var(--shadow-xl)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+                card.style.boxShadow = 'var(--shadow-lg)';
+            });
+        });
     </script>
 </body>
 </html>
